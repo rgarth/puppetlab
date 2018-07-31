@@ -1,0 +1,17 @@
+#!/bin/bash -e
+## In a prod env we would have a puppet server, this is a little hack
+## to make things work for this test situation
+## https://www.digitalocean.com/community/tutorials/how-to-set-up-a-masterless-puppet-environment-on-ubuntu-14-04
+
+## Run Puppet locally using puppet apply
+/opt/puppetlabs/bin/puppet apply /vagrant/puppet/manifests/site.pp --environment lab
+
+## Log status of the Puppet run
+if [ $? -eq 0 ]
+then
+    /usr/bin/logger -i "Puppet has run successfully" -t "puppet-run"
+    exit 0
+else
+    /usr/bin/logger -i "Puppet has ran into an error, please run Puppet manually" -t "puppet-run"
+    exit 1
+fi
